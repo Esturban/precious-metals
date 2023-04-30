@@ -2,7 +2,10 @@
 title: "Precious Metals"
 author: "E Valencia"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document:
+    self_contained: false
+runtime: shiny
 params:
   pct_cols:
   - r
@@ -22,7 +25,7 @@ resource_files:
 - data/si_f.RDS
 ---
 
-```{r setup, include=FALSE,global = TRUE}
+```{r setup, include=FALSE, global = TRUE}
 knitr::opts_chunk$set(echo = F)
 # sapply(c('Quandl','quantmod','dplyr','apexcharter','ggplot2','DT','htmltools','jsonlite'),require,quietly = T)
 require(Quandl,quietly = T)
@@ -35,13 +38,13 @@ require(rvest,quietly = T)
 require(htmltools,quietly = T)
 require(jsonlite,quietly = T)
 
-api_key<-jsonlite::fromJSON(here::here("quandl_api.json"))[[1]]
+api_key<-jsonlite::fromJSON(here::here("precious-metals","quandl_api.json"))[[1]]
 # av_api_key(jsonlite::fromJSON(here::here("quandl_api.json"))[[2]])
 options("getSymbols.warning4.0" = FALSE)
 Quandl::Quandl.api_key(api_key)
 
 #Load the most recent data from here
-invisible(sapply(list.files(here::here("src","reports"),pattern = "*.R",full.names = T),source,local=F))
+invisible(sapply(list.files(here::here("precious-metals","src","reports"),pattern = "*.R",full.names = T),source,local=F))
 
 if (!file.exists(here::here("data","si_f.RDS"))) {
   #Load the original long term data from Nasdaq
@@ -90,13 +93,13 @@ if (!file.exists(here::here("data","si_f.RDS"))) {
     mutate(r5 = rollsumr(r,k=5,fill=NA))%>%
     timetk::tk_xts(date_var = "index")
   
-    saveRDS(GVS_F,here::here("data","gvs_f.RDS"))
-  saveRDS(SI_F,here::here("data","si_f.RDS"))
-  saveRDS(GC_F,here::here("data","gc_f.RDS"))
+    saveRDS(GVS_F,here::here("precious-metals","data","gvs_f.RDS"))
+  saveRDS(SI_F,here::here("precious-metals","data","si_f.RDS"))
+  saveRDS(GC_F,here::here("precious-metals","data","gc_f.RDS"))
 
 } else{
-  SI_F <- readRDS(here::here("data","si_f.RDS"))
-  GC_F <- readRDS(here::here("data","gc_f.RDS"))
+  SI_F <- readRDS(here::here("precious-metals","data","si_f.RDS"))
+  GC_F <- readRDS(here::here("precious-metals","data","gc_f.RDS"))
   # GVS_F <- readRDS(here::here("data","gvs_f.RDS"))
   if(max(index(GC_F))!=max(index(GC_Last)))   GC_F<-rbind(OHLC(GC_F),GC_Last[paste0(max(index(GC_F))+1,"::")])
   if(max(index(SI_F))!=max(index(SI_Last)))   SI_F<-rbind(OHLC(SI_F),SI_Last[paste0(max(index(SI_F))+1,"::")])
@@ -149,9 +152,9 @@ if (!file.exists(here::here("data","si_f.RDS"))) {
     timetk::tk_xts(date_var = "index")
   
   
-  saveRDS(GVS_F,here::here("data","gvs_f.RDS"))
-  saveRDS(SI_F,here::here("data","si_f.RDS"))
-  saveRDS(GC_F,here::here("data","gc_f.RDS"))
+  saveRDS(GVS_F,here::here("precious-metals","data","gvs_f.RDS"))
+  saveRDS(SI_F,here::here("precious-metals","data","si_f.RDS"))
+  saveRDS(GC_F,here::here("precious-metals","data","gc_f.RDS"))
 
   
 }
