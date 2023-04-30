@@ -41,7 +41,7 @@ options("getSymbols.warning4.0" = FALSE)
 Quandl::Quandl.api_key(api_key)
 
 #Load the most recent data from here
-sapply(list.files(here::here("src","reports"),pattern = "*.R",full.names = T),source,globalenv())
+invisible(sapply(list.files(here::here("src","reports"),pattern = "*.R",full.names = T),source,local=F))
 
 if (!file.exists(here::here("data","si_f.RDS"))) {
   #Load the original long term data from Nasdaq
