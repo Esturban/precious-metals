@@ -4,4 +4,5 @@
 logs
 **/archive/**
 .Renviron
-*.json
+*.json.codegraph/
+.codegraph/
