@@ -4,4 +4,9 @@
 logs
 **/archive/**
 .Renviron
-*.json
+*.json.codegraph/
+.codegraph/
+AGENTS.md
+AGENTS.MD
+CLAUDE.md
+GEMINI.md
